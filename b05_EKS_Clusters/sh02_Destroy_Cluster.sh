@@ -8,7 +8,6 @@ echo "------------------------------------------"
 
 cd b05_EKS_Cluster/ || { echo "ERROR: EKS module directory not found"; exit 1; }
 
-terraform init
 terraform apply -destroy -auto-approve
 
 
@@ -19,7 +18,6 @@ echo "----------------------------------"
 
 cd ../b04_VPC_Module/ || { echo "ERROR: VPC module directory not found"; exit 1; }
 
-terraform init
 terraform apply -destroy -auto-approve
 
 echo "-------------------------------------------"
