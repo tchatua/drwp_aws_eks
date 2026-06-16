@@ -99,4 +99,102 @@ b05_EKS_Cluster
 
 ```
 
+```sh
+ Error: reading EKS Add-On version info (south-jersey-eks-tchatua-dev-pod-identity-agent, 1.34): empty result
+│
+│   with data.aws_eks_addon_version.pia_default,
+│   on b01_01_data_eks_addon.tf line 9, in data "aws_eks_addon_version" "pia_default":
+│    9: data "aws_eks_addon_version" "pia_default" {
+│
+╵
+╷
+│ Error: reading EKS Add-On version info (south-jersey-eks-tchatua-dev-pod-identity-agent, 1.34): empty result
+│
+│   with data.aws_eks_addon_version.pia_latest,
+│   on b01_01_data_eks_addon.tf line 19, in data "aws_eks_addon_version" "pia_latest":
+│   19: data "aws_eks_addon_version" "pia_latest" {
+│
+╵
+╷
+│ Error: reading EKS Add-On version info (south-jersey-eks-tchatua-dev-aws-ebs-csi-driver, 1.34): empty result
+│
+│   with data.aws_eks_addon_version.ebs_csi_default,
+│   on b05_03_ebs_csi_eks_addon.tf line 2, in data "aws_eks_addon_version" "ebs_csi_default":
+│    2: data "aws_eks_addon_version" "ebs_csi_default" {
+# ------------------------------------------------------------------------------------
 
+terraform providers
+
+Providers required by configuration:
+.
+├── provider[registry.terraform.io/hashicorp/aws] ~> 6.0
+├── provider[terraform.io/builtin/terraform]
+├── provider[registry.terraform.io/hashicorp/kubernetes] ~> 2.38.0
+├── provider[registry.terraform.io/hashicorp/helm] ~> 3.1.0
+└── provider[registry.terraform.io/hashicorp/http] ~> 3.5.0
+
+Providers required by state:
+
+    provider[registry.terraform.io/hashicorp/aws]
+
+    provider[registry.terraform.io/hashicorp/http]
+
+    provider[terraform.io/builtin/terraform]
+
+
+# ------------------------------------------------------------------------------------
+
+kubectl get pods
+E0616 15:42:16.487152   30396 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"https://C86763260B8ADAC2FE760EA809866FA0.gr7.us-east-2.eks.amazonaws.com/api?timeout=32s\": dial tcp: lookup C86763260B8ADAC2FE760EA809866FA0.gr7.us-east-2.eks.amazonaws.com: no such host"
+E0616 15:42:16.490377   30396 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"https://C86763260B8ADAC2FE760EA809866FA0.gr7.us-east-2.eks.amazonaws.com/api?timeout=32s\": dial tcp: lookup C86763260B8ADAC2FE760EA809866FA0.gr7.us-east-2.eks.amazonaws.com: no such host"
+E0616 15:42:16.492461   30396 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"https://C86763260B8ADAC2FE760EA809866FA0.gr7.us-east-2.eks.amazonaws.com/api?timeout=32s\": dial tcp: lookup C86763260B8ADAC2FE760EA809866FA0.gr7.us-east-2.eks.amazonaws.com: no such host"
+E0616 15:42:16.494651   30396 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"https://C86763260B8ADAC2FE760EA809866FA0.gr7.us-east-2.eks.amazonaws.com/api?timeout=32s\": dial tcp: lookup C86763260B8ADAC2FE760EA809866FA0.gr7.us-east-2.eks.amazonaws.com: no such host"
+E0616 15:42:16.496297   30396 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"https://C86763260B8ADAC2FE760EA809866FA0.gr7.us-east-2.eks.amazonaws.com/api?timeout=32s\": dial tcp: lookup C86763260B8ADAC2FE760EA809866FA0.gr7.us-east-2.eks.amazonaws.com: no such host"
+Unable to connect to the server: dial tcp: lookup C86763260B8ADAC2FE760EA809866FA0.gr7.us-east-2.eks.amazonaws.com: no such host
+# ------------------------------------------------------------------------------------
+
+aws eks update-kubeconfig \
+  --name south-jersey-eks-tchatua-dev-eks-control-plane \
+  --region us-east-2
+
+# ------------------------------------------------------------------------------------
+
+kubectl get pods
+No resources found in default namespace.
+
+kubectl get pods -n kube-system
+NAME                                                              READY   STATUS    RESTARTS   AGE
+aws-load-balancer-controller-6d95dd895-99594                      1/1     Running   0          23m
+aws-load-balancer-controller-6d95dd895-k2w7g                      1/1     Running   0          23m
+aws-node-fsr8q                                                    2/2     Running   0          3h11m
+aws-node-wt659                                                    2/2     Running   0          3h11m
+coredns-64ff95db9-fgs6d                                           1/1     Running   0          3h14m
+coredns-64ff95db9-gg8pr                                           1/1     Running   0          3h14m
+csi-secrets-store-secrets-store-csi-driver-25r5x                  3/3     Running   0          23m
+csi-secrets-store-secrets-store-csi-driver-nwjmk                  3/3     Running   0          23m
+ebs-csi-controller-6fc4855ddf-kq6x9                               6/6     Running   0          23m
+ebs-csi-controller-6fc4855ddf-mh2cm                               6/6     Running   0          23m
+ebs-csi-node-2q6xn                                                3/3     Running   0          23m
+ebs-csi-node-pprlb                                                3/3     Running   0          23m
+eks-pod-identity-agent-4bn9t                                      1/1     Running   0          24m
+eks-pod-identity-agent-ztlkh                                      1/1     Running   0          24m
+kube-proxy-bwmr4                                                  1/1     Running   0          3h11m
+kube-proxy-z5dx7                                                  1/1     Running   0          3h11m
+secrets-provider-aws-secrets-store-csi-driver-provider-awsjhfzm   1/1     Running   0          23m
+secrets-provider-aws-secrets-store-csi-driver-provider-awstvsfh   1/1     Running   0          23m
+
+# ------------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------------
+
+```

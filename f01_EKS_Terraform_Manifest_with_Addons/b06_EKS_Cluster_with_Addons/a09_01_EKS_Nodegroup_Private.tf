@@ -68,7 +68,7 @@ resource "aws_eks_node_group" "eks_node_group" {
   force_update_version = true
 
   labels = {
-    "env"     = var.environment_name
+    "env" = var.environment_name
   }
 
   tags = merge(var.tags, {

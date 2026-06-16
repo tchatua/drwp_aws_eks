@@ -10,12 +10,26 @@
 */
 
 terraform {
+  # Minimum Terraform CLI version required
   required_version = ">= 1.15.5"
 
+  # Required providers and version constraints
   required_providers {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 6.0" # Ensures compatibility with AWS provider v6.x
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.38.0"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 3.1.0"
+    }
+    http = {
+      source  = "hashicorp/http"
+      version = "~> 3.5.0"
     }
   }
   /*
@@ -33,10 +47,10 @@ terraform {
 
   backend "s3" {
     bucket         = "tfstate-dev-terraformprojects-n5ov6p" # S3 bucket where the remote state file is stored
-    key            = "eks/dev/terraform.tfstate"            # Path inside the bucket for this environment's state file
+    key            = "eks/dev2/terraform.tfstate"           # Path inside the bucket for this environment's state file
     region         = "us-east-2"                            # AWS region where the bucket and DynamoDB table reside
-    dynamodb_table = "tfstate-lock-dev-terraformprojects"   # DynamoDB table used for state locking
+    # dynamodb_table = "tfstate-lock-dev-terraformprojects"   # DynamoDB table used for state locking
     encrypt        = true                                   # Enables (server‑side encryption)SSE-S3 encryption for the state file
-    # use_lockfile   = true                                    # Enables Terraform-native lockfile-based state locking
+    use_lockfile   = true                                 # Enables Terraform-native lockfile-based state locking
   }
 }

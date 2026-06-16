@@ -27,9 +27,9 @@ resource "aws_eks_cluster" "eks_control_plane" {
 
   # Configure how the control plane connects to the VPC
   vpc_config {
-    subnet_ids                   = data.terraform_remote_state.vpc.outputs.aws_private_subnet_ids
-    endpoint_private_access      = var.cluster_endpoint_private_access
-    endpoint_public_access       = var.cluster_endpoint_public_access
+    subnet_ids              = data.terraform_remote_state.vpc.outputs.aws_private_subnet_ids
+    endpoint_private_access = var.cluster_endpoint_private_access
+    endpoint_public_access  = var.cluster_endpoint_public_access
     # endpoint_public_access_cidrs = var.cluster_endpoint_public_access_cidrs
   }
 

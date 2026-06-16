@@ -6,7 +6,7 @@ echo "------------------------------------------"
 echo "STEP1: Deleting EKS Cluster using Terraform"
 echo "------------------------------------------"
 
-cd b05_EKS_Cluster/ || { echo "ERROR: EKS module directory not found"; exit 1; }
+cd b06_EKS_Cluster_with_Addons/ || { echo "ERROR: EKS module directory not found"; exit 1; }
 
 terraform apply -destroy -auto-approve
 

@@ -32,11 +32,11 @@ terraform {
 */
 
   backend "s3" {
-    bucket         = "tfstate-dev-terraformprojects-n5ov6p"    # S3 bucket where the remote state file is stored
-    key            = "vpc/dev_01_vpc_module/terraform.tfstate" # Path inside the bucket for this environment's state file
-    region         = "us-east-2"                               # AWS region where the bucket and DynamoDB table reside
-    dynamodb_table = "tfstate-lock-dev-terraformprojects"      # DynamoDB table used for state locking
-    encrypt        = true                                      # Enables (server‑side encryption)SSE-S3 encryption for the state file
+    bucket         = "tfstate-dev-terraformprojects-n5ov6p" # S3 bucket where the remote state file is stored
+    key            = "vpc/dev2/terraform.tfstate"           # Path inside the bucket for this environment's state file
+    region         = "us-east-2"                            # AWS region where the bucket and DynamoDB table reside
+    dynamodb_table = "tfstate-lock-dev-terraformprojects"   # DynamoDB table used for state locking
+    encrypt        = true                                   # Enables (server‑side encryption)SSE-S3 encryption for the state file
     # use_lockfile   = true                                 # Enables Terraform-native lockfile-based state locking
   }
 }

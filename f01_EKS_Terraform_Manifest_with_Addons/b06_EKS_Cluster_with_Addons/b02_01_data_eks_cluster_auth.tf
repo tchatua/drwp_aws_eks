@@ -9,5 +9,5 @@ Data Source: aws_eks_cluster_auth
 
 # Datasource: EKE Cluster Auth
 data "aws_eks_cluster_auth" "eks_cluster_auth" {
-  name = "${aws_eks_cluster.eks_control_plane.id}"
+  name = aws_eks_cluster.eks_control_plane.id
 }
