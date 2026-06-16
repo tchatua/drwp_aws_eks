@@ -28,6 +28,7 @@ Here, I will build on top of my base EKS cluster from `b05_EKS_Cluster` and inte
 - EKS Pod Identity Agent
 
 ![alt text](image-3.png)
+![alt text](image.png)
 
 ## Architecture Overview:
 
