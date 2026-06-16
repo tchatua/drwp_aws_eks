@@ -104,20 +104,6 @@ b05_EKS_Cluster
 |-- b04_05_lbc_eks_pod_identity_association.tf
 |-- b04_06_lbc_helm_install.tf
 |-- 
-|-- 
-|-- 
-|-- 
-|-- 
-|-- 
-|-- 
-|-- 
-|-- 
-|-- 
-|-- 
-|-- 
-|-- 
-|-- 
-|-- 
 `-- terraform.tfvars
 
 ```
