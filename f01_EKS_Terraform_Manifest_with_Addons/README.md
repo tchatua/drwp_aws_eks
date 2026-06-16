@@ -30,6 +30,7 @@ Here, I will build on top of my base EKS cluster from `b05_EKS_Cluster` and inte
 ![alt text](image-3.png)
 ![alt text](image.png)
 ![alt text](image-1.png)
+![alt text](image-2.png)
 
 ## Architecture Overview:
 
