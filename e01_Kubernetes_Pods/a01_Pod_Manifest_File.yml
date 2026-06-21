@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: catalog-pod                     # Name of the Pod
+  labels:
+    app: catalog                        # Label used for selectors (e.g., Services, Deployments)
+spec:
+  containers:
+    - name: catalog                     # Container name inside the Pod
+      image: "public.ecr.aws/aws-containers/retail-store-sample-catalog:1.3.0" # Docker image for the catalog microservice
+      ports:
+        - name: http                    # Logical name for the port
+          containerPort: 8080           # Application listens on port 8080
+          protocol: TCP                 # Default protocol (explicit for clarity)
+
+      resources:
+        limits:                         # Maximum resources the container is allowed to consume
+          cpu: "200m"                   # 0.2 CPU cores
+          memory: "256Mi"               # 256 MB RAM
+        requests:                       # Minimum guaranteed resources for scheduling
+          cpu: "100m"                   # 0.1 CPU cores
+          memory: "128Mi"               # 128 MB RAM
+
+      readinessProbe:                   # Determines when the app is ready to receive traffic
+        httpGet:
+          path: /health                 # Endpoint used for readiness checks
+          # path: /topology                 # Optional alternative endpoint
+          port: 8080                    # Probe hits the same port the app listens on
+        # initialDelaySeconds: 5          # Wait before starting readiness checks
+        # periodSeconds: 10               # Check every 10 seconds
+        # timeoutSeconds: 2               # Probe timeout
+        # failureThreshold: 3             # Mark pod "Not Ready" after 3 failures
