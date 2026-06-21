@@ -20,9 +20,9 @@ cluster_endpoint_public_access       = true
 cluster_endpoint_public_access_cidrs = ["173.61.6.206/32"] # Replace with your IP or CIDR block for secure access
 
 // EKS Node Group Variables
-node_group_desired_size = 3
+node_group_desired_size = 2
 node_group_max_size     = 6
-node_group_min_size     = 1
+node_group_min_size     = 2
 node_instance_type      = ["t3.medium"] # Replace with your desired EC2 instance type(s) for the EKS node group
 node_capacity_type      = "ON_DEMAND" # or "SPOT"
 node_disk_size          = 20
