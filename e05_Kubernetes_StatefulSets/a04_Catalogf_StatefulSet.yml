@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: catalog-mysql                               # Name of the StatefulSet (base name for all Pods)
+  labels:
+    app.kubernetes.io/name: catalog                 # Application label
+    app.kubernetes.io/instance: catalog             # Instance identifier
+    app.kubernetes.io/component: mysql              # Component type (MySQL DB)
+    app.kubernetes.io/owner: store-sample    # Ownership label for grouping/visibility
+spec:
+  replicas: 1                                        # Number of MySQL Pods (1 = single master)
+  serviceName: catalog-mysql                         # Name of the headless Service associated with this StatefulSet
+  selector:
+    matchLabels:                                     # Pods managed by this StatefulSet must match these labels
+      app.kubernetes.io/name: catalog
+      app.kubernetes.io/instance: catalog
+      app.kubernetes.io/component: mysql
+      app.kubernetes.io/owner: store-sample
+  template:
+    metadata:
+      labels:                                        # Labels applied to each Pod created by this StatefulSet
+        app.kubernetes.io/name: catalog
+        app.kubernetes.io/instance: catalog
+        app.kubernetes.io/component: mysql
+        app.kubernetes.io/owner: store-sample
+    spec:
+      containers:
+        - name: mysql                                # Container name
+          image: "public.ecr.aws/docker/library/mysql:8.0"   # MySQL 8.0 official image
+          imagePullPolicy: IfNotPresent              # Pull image only if not already cached
+          env:                                       # Environment variables required by MySQL
+            - name: MYSQL_ROOT_PASSWORD
+              value: my-secret-pw                    # Root password (for demo only; use Secrets in production)
+            - name: MYSQL_DATABASE
+              value: catalogdb                       # Database/schema to auto-create on startup
+            - name: MYSQL_USER
+              value: catalog_user                    # Application DB user
+            - name: MYSQL_PASSWORD
+              value: MapleShadeNJ08052                     # Application DB password (should be a Secret)
+          ports:
+            - name: mysql
+              containerPort: 3306                    # MySQL default port
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/mysql              # MySQL data directory (persistent storage)
+      volumes:
+        - name: data
+          emptyDir: {}                               # Temporary storage (NOT persistent; data lost on restart)
+                                                     # For real DB workloads, replace with PersistentVolumeClaim
