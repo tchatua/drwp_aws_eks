@@ -1,0 +1,32 @@
+#
+
+```sh
+
+touch a01_cart_service_account.yaml
+touch a02_cart_configmap.yaml
+touch a03_cart_dynamodb_deployment.yaml
+touch a04_cart_dynamodb_clusterip_service.yaml
+touch a05_cart_deployment.yaml
+touch a06_cart_clusterip_service.yaml
+
+
+touch a01_checkout_service_account.yaml
+touch a02_checkout_configmap.yaml
+touch a03_checkout_redis_deployment.yaml
+touch a04_checkout_redis_clusterip_service.yaml
+touch a05_checkout_deployment.yaml
+touch a06_checkout_clusterip_service.yaml
+
+
+
+touch a01_orders_service_account.yaml
+touch a02_orders_db_secret.yaml
+touch a03_orders_rabbitmq_secret.yaml
+touch a04_orders_configmap.yaml
+touch a05_orders_postgresql_statefulset.yaml
+touch a06_orders_postgresql_clusterip_service.yaml
+touch a07_orders_rabbitmq_statefulset.yaml
+touch a08_orders_rabbitmq_clusterip_service.yaml
+touch a09_orders_deployment.yaml
+touch a10_orders_clusterip_service.yaml
+```

@@ -1,0 +1,70 @@
+# ------------------------------------------------------------------------------
+# Service: ui-np (NodePort)
+# ------------------------------------------------------------------------------
+# PURPOSE:
+#   Exposes the Retail Store UI Deployment internally via Service Port 80 and
+#   externally to the AWS ALB (Ingress) via a NodePort. This service is required
+#   when using **Ingress Instance Mode**, where the ALB forwards traffic to
+#   NodePorts on each worker node.
+#
+# PRODUCTION‑GRADE NOTES:
+#   - NodePort is used ONLY because Ingress Instance Mode requires it.
+#   - In production, IP Mode (target-type: ip) is preferred because it removes
+#     the dependency on NodePorts and improves scalability and security.
+#   - This service does NOT expose the application directly to the internet.
+#     It is only reachable by the ALB inside the VPC.
+#
+# KEY FIELDS:
+#
+#   type: NodePort
+#       Required for ALB Instance Mode. Opens a static port on every worker node.
+#       ALB forwards traffic to <NodeIP>:<NodePort>.
+#
+#   ports:
+#     - port: 80
+#         The internal Service Port used by the ALB to communicate with the UI.
+#
+#       targetPort: http
+#         Maps to the named container port "http" defined in the UI Deployment.
+#         This resolves to the actual container port (e.g., 8080).
+#
+#       name: http
+#         Logical port name for clarity and reference in other manifests.
+#
+#   selector:
+#       Ensures traffic is routed to the correct UI Pods based on labels.
+#       This must match the labels defined in the UI Deployment template.
+#
+# OPERATIONAL BEHAVIOR:
+#   - ALB → NodePort → Service Port → Pod TargetPort
+#   - No direct public access; worker nodes are in private subnets.
+#   - NodePort range is automatically assigned (30000–32767) unless overridden.
+#
+# OVERALL:
+#   This service is a critical component for Ingress Instance Mode routing.
+#   It provides a stable, load‑balanced endpoint for the UI Pods while allowing
+#   the ALB to forward traffic into the cluster.
+# ------------------------------------------------------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: ui-np
+  labels:
+    helm.sh/chart: ui-1.2.4
+    app.kubernetes.io/name: ui
+    app.kubernetes.io/instance: ui
+    app.kubernetes.io/component: service
+    app.kubernetes.io/owner: retail-store-sample
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: ui
+    app.kubernetes.io/instance: ui
+    app.kubernetes.io/component: service
+    app.kubernetes.io/owner: retail-store-sample
