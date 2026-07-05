@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: aws-cli                 # Name of the pod
+  namespace: default            # Namespace where the pod will run
+spec:
+  serviceAccountName: aws-cli-sa   # Pod will use this ServiceAccount for IAM/permissions
+  containers:
+  - name: aws-cli               # Container name
+    image: amazon/aws-cli       # Official AWS CLI container image
+    command: ["sleep", "infinity"] # Keeps the container running so I can exec into it and run AWS CLI commands

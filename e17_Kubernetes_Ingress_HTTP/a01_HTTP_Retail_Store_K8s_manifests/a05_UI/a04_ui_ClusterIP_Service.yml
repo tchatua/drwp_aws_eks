@@ -1,0 +1,53 @@
+# ------------------------------------------------------------------------------
+# Service: ui (ClusterIP)
+# ------------------------------------------------------------------------------
+# PURPOSE:
+#   Provides stable, internal-only networking for the Retail Store UI
+#   microservice. This ClusterIP service exposes the UI Deployment on port 80
+#   within the Kubernetes cluster. It is the primary backend target for the
+#   AWS ALB Ingress (IP Mode) or for internal service-to-service communication.
+#
+# PRODUCTION‑GRADE NOTES:
+#   - ClusterIP is the recommended service type for internal microservices.
+#   - This service is NOT exposed externally; traffic enters through the ALB
+#     Ingress, which forwards requests to this service.
+#   - The selector labels must match the UI Deployment pod template labels
+#     to ensure correct traffic routing.
+#   - Uses named targetPort ("http") for clarity and alignment with the
+#     Deployment’s container port definition.
+#
+# OPERATIONAL BEHAVIOR:
+#   - Ingress (ALB) → ClusterIP Service → Pod (IP Mode)
+#   - Internal microservices (e.g., Checkout, Carts) can also call the UI
+#     using this service name: http://ui:80
+#   - Provides load balancing across all UI pods (if replicas > 1).
+#
+# OVERALL:
+#   A minimal, secure, production‑ready internal service definition that
+#   supports both Ingress IP Mode and internal microservice communication.
+# ------------------------------------------------------------------------------
+
+# Source: retail-store-sample-ui-chart/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: ui
+  labels:
+    helm.sh/chart: ui-1.2.4
+    app.kubernetes.io/name: ui
+    app.kubernetes.io/instance: ui
+    app.kubernetes.io/component: service
+    app.kubernetes.io/owner: retail-store-sample
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP  
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: ui
+    app.kubernetes.io/instance: ui
+    app.kubernetes.io/component: service
+    app.kubernetes.io/owner: retail-store-sample

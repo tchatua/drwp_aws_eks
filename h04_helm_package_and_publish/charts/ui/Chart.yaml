@@ -1,0 +1,6 @@
+apiVersion: v2
+description: Helm chart for the AWS Retail Store Sample Application UI service
+  service
+name: retail-store-sample-ui-chart
+type: application
+version: 1.3.1    # Updated helm chart version (previously 1.3.0)
