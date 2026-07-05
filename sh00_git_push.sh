@@ -3,5 +3,4 @@
 git add .
 git commit -m "Bash shel scripting updated"
 
-git push 
-
+git push --set-upstream origin helmdev
