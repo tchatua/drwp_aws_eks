@@ -8,6 +8,7 @@ echo "----------------------------------"
 
 cd f01_EKS_Terraform_Manifest_with_Addons/b04_VPC_Module
 
+terraform init
 terraform apply -auto-approve
 
 
@@ -17,7 +18,7 @@ echo "------------------------------------------"
 
 cd ../b06_EKS_Cluster_with_Addons || { echo "ERROR: VPC module directory not found"; exit 1; }
 
-
+terraform init
 terraform apply -auto-approve
 
 
@@ -27,7 +28,7 @@ echo "------------------------------------------"
 
 cd ../../f02_aws_dataplane_terraform_deployment/ || { echo "ERROR: EKS module directory not found"; exit 1; }
 
-
+terraform init
 terraform apply -auto-approve
 
 
