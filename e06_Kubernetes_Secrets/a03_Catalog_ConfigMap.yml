@@ -1,0 +1,21 @@
+---
+# What This ConfigMap Represents
+# It externalizes all database‑related configuration for the catalog microservice.
+# The application reads these values as environment variables.
+# This allows me to switch between:
+#   in-memory mode (default)
+#   MySQL mode (in the StatefulSet or RDS)
+# No hard‑coding inside the Deployment YAML.
+# Makes the Deployment reusable across dev, QA, staging, and prod.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: catalog-config                                   # Name of the ConfigMap
+data:
+  CATALOG_PERSISTENCE_PROVIDER: "in-memory"       # Persistence type: in-memory or mysql
+  # CATALOG_PERSISTENCE_ENDPOINT: "catalog-mysql:3306"                # DB endpoint (empty for in-memory; set for MySQL)
+  CATALOG_PERSISTENCE_ENDPOINT: "catalog-mysql-0.catalog-mysql.default.svc.cluster.local:3306"                # DB endpoint (empty for in-memory; set for MySQL)
+  CATALOG_PERSISTENCE_DB_NAME: "catalog_db"        # Database/schema name used by the catalog service
+  # CATALOG_PERSISTENCE_USER: "catalog_user"        # Username for DB authentication
+  # CATALOG_PERSISTENCE_PASSWORD: "MapleShadeNJ08052"                # Password for DB authentication (empty for in-memory)
+  CATALOG_PERSISTENCE_CONNECT_TIMEOUT: "5"        # DB connection timeout in seconds

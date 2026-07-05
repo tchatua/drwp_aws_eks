@@ -1,0 +1,100 @@
+# ------------------------------------------------------------------------------
+# Ingress: retail-store-https-instance-mode
+#
+# PURPOSE:
+#   Exposes the Retail Store UI service to the internet using an AWS
+#   Application Load Balancer (ALB) operating in **Instance Mode**.
+#   In Instance Mode, the ALB forwards traffic to NodePorts on each worker node.
+#
+# PRODUCTION‑GRADE NOTES:
+#   - Uses HTTPS (443) as the primary listener with automatic HTTP→HTTPS redirect.
+#   - Terminates TLS at the ALB using an ACM certificate.
+#   - Configures strict health checks for improved resiliency.
+#   - Uses internet-facing scheme to allow global public access.
+#   - ALB name is explicitly set for easier identification and lifecycle management.
+#
+# KEY ANNOTATIONS (Production Best Practices):
+#
+#   alb.ingress.kubernetes.io/load-balancer-name:
+#       Human‑readable ALB name for operational clarity and cost tracking.
+#
+#   alb.ingress.kubernetes.io/scheme: internet-facing
+#       Ensures the ALB receives traffic from the public internet.
+#
+#   alb.ingress.kubernetes.io/target-type: instance
+#       ALB forwards traffic to worker node NodePorts (Instance Mode).
+#       NOTE: This requires NodePort services and worker nodes reachable by ALB subnets.
+#
+#   --- Health Check Configuration ---
+#   alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+#   alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+#   alb.ingress.kubernetes.io/healthcheck-path: /actuator/health/readiness
+#       Uses Spring Boot readiness endpoint for accurate pod health evaluation.
+#
+#   alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
+#   alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
+#   alb.ingress.kubernetes.io/success-codes: '200'
+#   alb.ingress.kubernetes.io/healthy-threshold-count: '2'
+#   alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
+#       Tuned for production: faster failover, reduced downtime, and stable routing.
+#
+#   --- SSL / TLS Configuration ---
+#   alb.ingress.kubernetes.io/listen-ports:
+#       Enables both HTTP (80) and HTTPS (443) listeners.
+#
+#   alb.ingress.kubernetes.io/certificate-arn:
+#       ACM certificate used for TLS termination at the ALB.
+#
+#   alb.ingress.kubernetes.io/ssl-redirect: '443'
+#       Forces all HTTP traffic to HTTPS for security compliance.
+#
+# SPEC:
+#   ingressClassName: alb
+#       Ensures AWS Load Balancer Controller manages this Ingress.
+#
+#   defaultBackend:
+#       Routes all traffic to the UI NodePort service.
+#       UI internally communicates with Catalog, Carts, Checkout, and Orders services.
+#
+# OVERALL:
+#   This Ingress provides a secure, scalable, production‑ready entry point
+#   for the entire Retail Store microservices application.
+# ------------------------------------------------------------------------------
+
+
+# Annotations Reference: https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/guide/ingress/annotations/
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: retail-store-https-instance-mode
+  annotations:
+    # Load Balancer Name
+    alb.ingress.kubernetes.io/load-balancer-name: retail-store-https-instance-mode
+    # Ingress Core Settings
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: instance
+    # Health Check Settings
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP 
+    alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+    alb.ingress.kubernetes.io/healthcheck-path: /actuator/health/readiness    
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
+    alb.ingress.kubernetes.io/success-codes: '200'
+    alb.ingress.kubernetes.io/healthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
+    ## SSL Settings
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'
+    # alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-2:088354478627:certificate/abd0761a-8c9f-47f3-8350-e295f40d04ae
+    # arn:aws:acm:us-east-1:180789647333:certificate/60a5bccd-5cb1-426a-b792-4d6d6c459edf
+    # SSL Redirect Setting
+    alb.ingress.kubernetes.io/ssl-redirect: '443'        
+spec:
+  ingressClassName: alb 
+  defaultBackend:
+    service:
+      name: ui-np
+      port:
+        number: 80                  
+      
+
+      

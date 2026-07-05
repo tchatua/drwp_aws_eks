@@ -1,0 +1,16 @@
+a01_git_push.sh
+y01_git_push.sh
+
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# Terraform plans
+*.tfplan
+
+# OS files
+.DS_Store
+Thumbs.db

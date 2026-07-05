@@ -1,0 +1,10 @@
+--- 
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalog-mysql
+spec:
+  type: ExternalName
+  externalName: drwprdsdb.c7oescqy4eh4.us-east-2.rds.amazonaws.com
+  ports:
+    - port: 3306
