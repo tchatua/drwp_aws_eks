@@ -1,0 +1,39 @@
+# ------------------------------------------------------------------------------
+# ConfigMap: ui
+# ------------------------------------------------------------------------------
+# PURPOSE:
+#   Provides backend service endpoint configuration for the Retail Store UI
+#   microservice. These values are injected into the UI Deployment as
+#   environment variables and used by the Spring Boot application to route
+#   requests to the Catalog, Carts, Checkout, and Orders microservices.
+#
+# PRODUCTION‑GRADE NOTES:
+#   - Uses internal ClusterIP service names (DNS‑based discovery) for reliable,
+#     load‑balanced communication inside the Kubernetes cluster.
+#   - Keeps routing configuration externalized, enabling updates without
+#     rebuilding or redeploying the UI container image.
+#   - Ensures consistency across environments (dev, staging, prod) by allowing
+#     environment‑specific overrides via Helm values or Kustomize patches.
+#   - No sensitive data is stored here; only non‑secret routing information.
+#
+# OPERATIONAL BEHAVIOR:
+#   - UI application reads these values at startup via envFrom in the Deployment.
+#   - Each value resolves to a Kubernetes service (e.g., http://catalog → Service "catalog").
+#   - DNS resolution is handled automatically by kube-dns/CoreDNS.
+#
+# OVERALL:
+#   A clean, environment‑agnostic configuration layer that enables the UI
+#   microservice to communicate with all backend microservices using stable,
+#   internal service endpoints.
+# ------------------------------------------------------------------------------
+
+# Source: retail-store-sample-ui-chart/templates/configmap.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ui
+data:
+  RETAIL_UI_ENDPOINTS_CATALOG: http://catalog
+  RETAIL_UI_ENDPOINTS_CARTS: http://carts
+  RETAIL_UI_ENDPOINTS_CHECKOUT: http://checkout
+  RETAIL_UI_ENDPOINTS_ORDERS: http://orders
