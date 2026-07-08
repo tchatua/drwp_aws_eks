@@ -9,12 +9,11 @@ echo "----------------------------------"
 cd f01_EKS_Terraform_Manifest_with_Addons/
 
 aws ec2 create-tags \
-  --resources subnet-0bb1d03938a1f994e subnet-0dd6710e32a05a7b4 subnet-075ba0cb9332658ba \
+  --resources subnet-0c4b3fecc1d2e3a5a subnet-02634dfd14249af77 subnet-02d05e7dd6c54c8e8 \
   --tags Key=kubernetes.io/role/elb,Value=1 \
-         Key=kubernetes.io/cluster/south-jersey-eks-tchatua-dev-eks-control-plane,Value=shared
+         Key=kubernetes.io/cluster/eks-control-plane,Value=owned
 
 echo "-------------------------------------------"
 echo "Patch completed successfully!"
 echo "-------------------------------------------"
-
 
