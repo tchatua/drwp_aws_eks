@@ -12,19 +12,25 @@ set -e  # Exit immediately if any command fails
 
 
 echo "------------------------------------------"
+echo "STEP1: Deleting Karpenter Terraform"
+echo "------------------------------------------"
+
+cd b07_Karpenter_Terraform_Manifests/manifest_files/ || { echo "ERROR: Karpenter directory not found"; exit 1; }
+
+terraform apply -destroy -auto-approve
+
+echo "------------------------------------------"
 echo "STEP1: Deleting EKS Cluster using Terraform"
 echo "------------------------------------------"
 
-cd b02_EKS_Cluster_Addons_ExternalDNS/ || { echo "ERROR: VPC module directory not found"; exit 1; }
+cd ../../b02_EKS_Cluster_Addons_ExternalDNS/ || { echo "ERROR: EKS directory not found"; exit 1; }
 
-
-terraform apply -destroy -auto-approve
 
 echo "----------------------------------"
 echo "STEP1: Deleting VPC using Terraform"
 echo "----------------------------------"
 
-cd ../b04_VPC_Module
+cd ../b01_VPC_Module
 
 terraform apply -destroy -auto-approve
 
