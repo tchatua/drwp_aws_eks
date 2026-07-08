@@ -21,7 +21,8 @@
 */
 
 resource "aws_eks_cluster" "eks_control_plane" {
-  name     = "${local.name_prefix}-eks-control-plane"
+  # name     = "${local.name_prefix}-eks-control-plane"
+  name     = "eks-control-plane"
   version  = var.cluster_version
   role_arn = aws_iam_role.eks_cluster.arn
 

@@ -18,6 +18,13 @@ Karpenter is an open-source, flexible, high-performance Kubernetes cluster autos
 
 ![alt text](image.png)
 
+## Karpenter Installation Diagram
+
+![alt text](image-1.png)
+
+## Architecture Overview
+
+![alt text](image-2.png)
 
 ## Karpenter All Project Files
 
@@ -79,13 +86,134 @@ b02_EKS_Cluster_Addons_ExternalDNS/
 ├── c01_ExternalDNS_IAM_Policy_and_Role.tf
 ├── c02_ExternalDNS_Pod_Identity_Association.tf
 └── c03_ExternalDNS_EKS_Addon.tf
+│
+b07_Karpenter_Terraform_Manifests/
+├── README.md
+├── a01_01_Settings_Backend.tf
+├── a01_02_AWS_Helm_Kubernetes_Providers.tf
+│
+├── a02_01_Global_Variables.tf
+├── a02_02_Global_Locals.tf
+│
+├── a03_01_VPC_Remote_State.tf
+├── a03_02_EKS_Remote_State.tf
+│
+├── a04_01_DataSource_AWS_Account.tf
+├── a04_02_DataSource_AWS_Region.tf
+│
+├── a05_01_Karpenter_Controller_IAM_Role.tf
+├── a05_02_Karpenter_Controller_IAM_Policy.tf
+├── a05_03_Karpenter_Pod_Identity_Association.tf
+│
+├── a06_01_Karpenter_Node_IAM_Role.tf
+├── a06_02_Karpenter_Access_Entry.tf
+│
+├── a07_01_Karpenter_SQS_Queue.tf
+├── a07_02_Karpenter_EventBridge_Rules.tf
+│
+├── a08_Helm_Release.tf
+│
+└── terraform.tfvars
+```
+## Karpenter Logical Organization
 
-b03_Patch_Public_Subnet/
-└── sh03_patch_public_subnet.sh
-
+```sh
+b07_Karpenter_Terraform_Manifests/
+│
+├── Terraform Foundation
+│   ├── Backend Configuration
+│   ├── AWS Provider Configuration
+│   ├── Kubernetes Provider Configuration
+│   └── Helm Provider Configuration
+│
+├── Global Configuration
+│   ├── Variables
+│   └── Locals
+│
+├── Remote State References
+│   ├── VPC Remote State
+│   └── EKS Remote State
+│
+├── AWS Data Sources
+│   ├── AWS Account Information
+│   └── AWS Region Information
+│
+├── Karpenter Controller IAM
+│   ├── Controller IAM Role
+│   ├── Controller IAM Policy
+│   └── EKS Pod Identity Association
+│
+├── Karpenter Node IAM
+│   ├── Node IAM Role
+│   └── EKS Access Entry
+│
+├── Spot Interruption Handling
+│   ├── SQS Interruption Queue
+│   └── EventBridge Rules
+│
+├── Karpenter Installation
+│   └── Helm Release
+│
+└── Environment Configuration
+    └── terraform.tfvars
 ```
 
 ## Use Terraform to build Karpenter Controller on EKS Cluster
 
+- Execute Terraform Commands to Install Karpenter
 
+```sh
+# Change Directory
+cd 03_KARPENTER_terraform-manifests
+
+# Terraform Initialize
+terraform init
+
+# Terraform Validate
+terraform validate
+
+# Terraform Plan
+terraform plan
+
+# Terraform Apply
+terraform apply -auto-approve
+```
+
+## Verify Karpenter
+
+```sh
+# List Helm Release
+helm list -n kube-system
+
+# Helm Status
+helm status karpenter -n kube-system
+
+# List Pods
+kubectl get pods -n kube-system
+
+# Verify Logs
+kubectl -n kube-system logs -f <KARPENTER_POD_NAME> 
+or
+kubectl -n kube-system logs -f -l app.kubernetes.io/name=karpenter
+# #######################################################
+
+# #######################################################
+
+# #######################################################
+
+# #######################################################
+
+# #######################################################
+
+# #######################################################
+
+# #######################################################
+
+# #######################################################
+
+# #######################################################
+
+# #######################################################
+
+```
 
