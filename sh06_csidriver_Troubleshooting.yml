@@ -1,0 +1,57 @@
+############################################################
+# Quick Fix:
+## kubectl edit csidriver secrets-store.csi.k8s.io
+############################################################
+
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+apiVersion: storage.k8s.io/v1
+kind: CSIDriver
+metadata:
+  annotations:
+    meta.helm.sh/release-name: csi-secrets-store
+    meta.helm.sh/release-namespace: kube-system
+  creationTimestamp: "2026-07-06T08:36:03Z"
+  labels:
+    app: secrets-store-csi-driver
+    app.kubernetes.io/instance: csi-secrets-store
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: secrets-store-csi-driver
+    app.kubernetes.io/version: 1.6.0
+    helm.sh/chart: secrets-store-csi-driver-1.6.0
+  name: secrets-store.csi.k8s.io
+  resourceVersion: "1460"
+  uid: adf83896-4545-4e9a-93cb-26a853ab8e93
+# spec:
+#   attachRequired: false
+#   fsGroupPolicy: ReadWriteOnceWithFSType
+#   podInfoOnMount: true
+#   requiresRepublish: false
+#   seLinuxMount: false
+#   storageCapacity: false
+#   volumeLifecycleModes:
+#   - Ephemeral
+spec:
+  attachRequired: false
+  fsGroupPolicy: ReadWriteOnceWithFSType
+  podInfoOnMount: true
+  tokenRequests:
+  - audience: pods.eks.amazonaws.com
+  requiresRepublish: false
+  seLinuxMount: false
+  storageCapacity: false
+  volumeLifecycleModes:
+  - Ephemeral
+
+############################################################
+# Verify
+## kubectl get csidriver secrets-store.csi.k8s.io -o yaml
+############################################################
+
+############################################################
+# Restart the affected workloads
+## kubectl rollout restart deployment catalog
+## kubectl rollout restart deployment orders
+############################################################
